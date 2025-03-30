@@ -43,3 +43,24 @@ columns_to_transform = ['height_cm', 'weight_kg', 'calories_burned', 'hours_slee
 # すべてのカラムに対してqcutを適用
 for col in columns_to_transform:
     df[col] = pd.qcut(df[col], q=3, labels=[1, 2, 3])
+
+# カテゴリ変数のリスト（既にqcutでカテゴリ化された変数）
+cat_vars = ['height_cm', 'weight_kg', 'calories_burned', 'hours_sleep', 'hydration_level', 'bmi', 
+            'resting_heart_rate', 'blood_pressure_systolic', 'blood_pressure_diastolic', 
+            'fitness_level', 'daily_steps', 'avg_heart_rate', 'duration_minutes']
+
+# 高血圧（hypertension）とのクロス集計と可視化
+for var in cat_vars:
+    print(f"クロス集計: {var} と 高血圧の関係")
+    cross_tab = pd.crosstab(df['hypertension'], df[var])
+    print(cross_tab)
+    print("\n")
+    
+    # クロス集計結果を可視化
+    plt.figure(figsize=(6, 4))
+    sns.heatmap(cross_tab, annot=True, cmap='Blues', fmt='d', cbar=False, xticklabels=cross_tab.columns, 
+                yticklabels=['No Hypertension', 'Hypertension'])
+    plt.title(f'{var} vs Hypertension')
+    plt.xlabel(var)
+    plt.ylabel('Hypertension Status')
+    plt.show()
