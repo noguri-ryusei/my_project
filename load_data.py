@@ -33,13 +33,13 @@ encoder = LabelEncoder()
 for col in cat_cols:
     df[col] = encoder.fit_transform(df[col])
 
-# 三分位でカテゴリに変換（1: 低, 2: 中, 3: 高）
+# 三分位でカテゴリに変換（1: 低, 2: 中, 3: 高, 4: 超高）
 columns_to_transform = ['height_cm', 'weight_kg', 'calories_burned', 'hours_sleep', 'hydration_level', 'bmi', 'resting_heart_rate', 
                         'blood_pressure_systolic','blood_pressure_diastolic','fitness_level', 'daily_steps','avg_heart_rate', 'duration_minutes']
 
 # すべてのカラムに対してqcutを適用
 for col in columns_to_transform:
-    df[col] = pd.qcut(df[col], q=3, labels=[1, 2, 3])
+    df[col] = pd.qcut(df[col], q=4, labels=[1, 2, 3, 4])
 
 # カテゴリ変数のリスト（既にqcutでカテゴリ化された変数）
 cat_vars = ['height_cm', 'weight_kg', 'calories_burned', 'hours_sleep', 'hydration_level', 'bmi', 
